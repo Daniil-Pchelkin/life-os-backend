@@ -1,11 +1,11 @@
-import os
+п»їimport os
 import psycopg2
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Разрешаем запросы с любых сайтов (чтобы фронтенд на Vercel мог стучаться на бэкенд)
+# Р Р°Р·СЂРµС€Р°РµРј Р·Р°РїСЂРѕСЃС‹ СЃ Р»СЋР±С‹С… СЃР°Р№С‚РѕРІ (С‡С‚РѕР±С‹ С„СЂРѕРЅС‚РµРЅРґ РЅР° Vercel РјРѕРі СЃС‚СѓС‡Р°С‚СЊСЃСЏ РЅР° Р±СЌРєРµРЅРґ)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,18 +14,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Получаем строку подключения к базе данных из переменных окружения Render
+# РџРѕР»СѓС‡Р°РµРј СЃС‚СЂРѕРєСѓ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С… РёР· РїРµСЂРµРјРµРЅРЅС‹С… РѕРєСЂСѓР¶РµРЅРёСЏ Render
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 @app.get("/")
 def read_root():
-    return {"status": "ok", "message": "Life OS API работает!"}
+    return {"status": "ok", "message": "Life OS API СЂР°Р±РѕС‚Р°РµС‚!"}
 
-# Тестовый эндпоинт для проверки связи с базой данных Neon
+# РўРµСЃС‚РѕРІС‹Р№ СЌРЅРґРїРѕРёРЅС‚ РґР»СЏ РїСЂРѕРІРµСЂРєРё СЃРІСЏР·Рё СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С… Neon
 @app.get("/test-db")
 def test_db():
     try:
-        # Подключаемся к базе данных по адресу из переменных окружения
+        # РџРѕРґРєР»СЋС‡Р°РµРјСЃСЏ Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С… РїРѕ Р°РґСЂРµСЃСѓ РёР· РїРµСЂРµРјРµРЅРЅС‹С… РѕРєСЂСѓР¶РµРЅРёСЏ
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
         cursor.execute("SELECT version();")
@@ -34,11 +34,11 @@ def test_db():
         conn.close()
         return {
             "status": "success", 
-            "message": "База данных подключена успешно!",
+            "message": "Р‘Р°Р·Р° РґР°РЅРЅС‹С… РїРѕРґРєР»СЋС‡РµРЅР° СѓСЃРїРµС€РЅРѕ!",
             "postgres_version": db_version[0]
         }
     except Exception as e:
         return {
             "status": "error", 
-            "message": f"Ошибка подключения к базе: {str(e)}"
+            "message": f"РћС€РёР±РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє Р±Р°Р·Рµ: {str(e)}"
         }
